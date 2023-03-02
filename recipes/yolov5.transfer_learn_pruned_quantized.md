@@ -15,7 +15,9 @@ limitations under the License.
 -->
 
 ---
+
 # General Epoch/LR Hyperparams
+
 num_epochs: &num_epochs 200
 init_lr: &init_lr 0.0032
 final_lr: &final_lr 0.000384
@@ -25,50 +27,52 @@ biases_warmup_lr: &biases_warmup_lr 0.05
 quantization_lr: &quantization_lr 0.000002
 
 # Quantization Params
+
 quantization_start_epoch: &quantization_start_epoch 198
 
 # modifiers
+
 training_modifiers:
-  - !EpochRangeModifier
-    start_epoch: 0.0
-    end_epoch: *num_epochs
-    
-  - !LearningRateFunctionModifier
-    start_epoch: *warmup_epochs
-    end_epoch: *num_epochs
-    lr_func: cosine
-    init_lr: *init_lr
-    final_lr: *final_lr
-    
-  - !LearningRateFunctionModifier
-    start_epoch: 0
-    end_epoch: *warmup_epochs
-    lr_func: linear
-    init_lr: *weights_warmup_lr
-    final_lr: *init_lr
-    param_groups: [0, 1]
-    
-  - !LearningRateFunctionModifier
-    start_epoch: 0
-    end_epoch: *warmup_epochs
-    lr_func: linear
-    init_lr: *biases_warmup_lr
-    final_lr: *init_lr
-    param_groups: [2]
-    
-  - !SetLearningRateModifier
-    start_epoch: *quantization_start_epoch
-    learning_rate: *quantization_lr
+
+- !EpochRangeModifier
+  start_epoch: 0.0
+  end_epoch: \*num_epochs
+- !LearningRateFunctionModifier
+  start_epoch: *warmup_epochs
+  end_epoch: *num_epochs
+  lr_func: cosine
+  init_lr: *init_lr
+  final_lr: *final_lr
+- !LearningRateFunctionModifier
+  start_epoch: 0
+  end_epoch: *warmup_epochs
+  lr_func: linear
+  init_lr: *weights_warmup_lr
+  final_lr: \*init_lr
+  param_groups: [0, 1]
+- !LearningRateFunctionModifier
+  start_epoch: 0
+  end_epoch: *warmup_epochs
+  lr_func: linear
+  init_lr: *biases_warmup_lr
+  final_lr: \*init_lr
+  param_groups: [2]
+- !SetLearningRateModifier
+  start_epoch: *quantization_start_epoch
+  learning_rate: *quantization_lr
 
 pruning_modifiers:
-  - !ConstantPruningModifier
-    start_epoch: 0.0
-    params: __ALL_PRUNABLE__
-    
+
+- !ConstantPruningModifier
+  start_epoch: 0.0
+  params: __ALL_PRUNABLE__
+
 quantization_modifiers:
-  - !QuantizationModifier
-    start_epoch: *quantization_start_epoch
-    submodules: [ 'model.0', 'model.1', 'model.2', 'model.3', 'model.4', 'model.5', 'model.6', 'model.7', 'model.8', 'model.9', 'model.10', 'model.11', 'model.12', 'model.13', 'model.14', 'model.15', 'model.16', 'model.17', 'model.18', 'model.19', 'model.20', 'model.21', 'model.22', 'model.23' ]
+
+- !QuantizationModifier
+  start_epoch: \*quantization_start_epoch
+  submodules: [ 'model.0', 'model.1', 'model.2', 'model.3', 'model.4', 'model.5', 'model.6', 'model.7', 'model.8', 'model.9', 'model.10', 'model.11', 'model.12', 'model.13', 'model.14', 'model.15', 'model.16', 'model.17', 'model.18', 'model.19', 'model.20', 'model.21', 'model.22', 'model.23' ]
+
 ---
 
 # YOLOv5 Pruned-Quantized Transfer Learning
@@ -88,11 +92,11 @@ The training results for this recipe are made available through Weights and Bias
 
 To set up the training environment, follow the instructions on the [integration README](https://github.com/neuralmagic/sparseml/blob/main/integrations/ultralytics-yolov5/README.md).
 Using the given training script from the `yolov5` directory the following command can be used to launch this recipe.  
-Adjust the script command for your GPU device setup. 
+Adjust the script command for your GPU device setup.
 Ultralytics supports both DataParallel and DDP.
 Finally, the sparse weights used with this recipe are stored in the SparseZoo and can be retrieved by passing in a SparseZoo stub to the `--weights` argument.
 
-*script command:*
+_script command:_
 
 ```bash
 python train.py \
