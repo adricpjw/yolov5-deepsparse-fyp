@@ -65,7 +65,7 @@ pruning_modifiers:
 
 - !ConstantPruningModifier
   start_epoch: 0.0
-  params: **ALL_PRUNABLE**
+  params: __ALL_PRUNABLE__
 
 quantization_modifiers:
 
